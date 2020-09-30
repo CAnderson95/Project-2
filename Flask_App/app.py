@@ -1,4 +1,6 @@
 from flask import Flask, jsonify
+from flask_cors import CORS, cross_origin
+
 
 # Dictionary of Restaurants
 restaurants = [
@@ -25,6 +27,14 @@ restaurants = [
 #################################################
 app = Flask(__name__)
 
+CORS(app, resources={
+    r"/*": {
+        "origins": "*"
+    }
+})
+app.config['CORS_HEADERS'] = 'Content-Type'
+app.config['CORS_ORIGINS'] = '*'
+
 
 #################################################
 # Flask Routes
@@ -48,3 +58,5 @@ def welcome():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+
