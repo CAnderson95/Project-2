@@ -1,4 +1,4 @@
-,Name,Rating,Review Count,Price,Street Address,Zip Code,Latitude,Longitude,Url,Category
+,Name,Rating,Review_Count,Price,Street_Address,Zip_Code,Lat,Long,URL,Category
 0,Scott's Pizza Tours,5.0,314,$$,"New York, NY 10001",10001.0,40.750244140625,-73.9970245361328,https://www.yelp.com/biz/scotts-pizza-tours-new-york?adjust_creative=oMZNkvugSz1zY7aTmCD3ZQ&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=oMZNkvugSz1zY7aTmCD3ZQ,Pizza
 1,L'industrie Pizzeria,4.5,532,$,254 S 2nd St,11211.0,40.71162,-73.95783,https://www.yelp.com/biz/l-industrie-pizzeria-brooklyn?adjust_creative=oMZNkvugSz1zY7aTmCD3ZQ&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=oMZNkvugSz1zY7aTmCD3ZQ,Pizza
 2,B Side Pizza & Wine Bar,4.5,1140,$$,370 W 51st St,10019.0,40.76394000000001,-73.98833990000001,https://www.yelp.com/biz/b-side-pizza-and-wine-bar-new-york?adjust_creative=oMZNkvugSz1zY7aTmCD3ZQ&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=oMZNkvugSz1zY7aTmCD3ZQ,Pizza
