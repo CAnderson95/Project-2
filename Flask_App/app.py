@@ -76,7 +76,7 @@ def restaurant():
 #build route in API
 @app.route("/api/v1.0/attractions")
 #define function 
-def restaurant():
+def attraction():
     #read in the information from the database that was loaded in by the previous function 
     attractions = mongo.db.Top_Attractions_NYC
     #look through the information, could specify to find something specific, in this case it is pulling in everything
