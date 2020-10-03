@@ -39,20 +39,24 @@ def dataload():
      # sets of the same data if you were to ever run this app more than once  
      restaurants.drop()
      #read the data in
-     restaurant_data = pd.read_csv("../csv_repository/Overall_List/Top_100_NY_day.csv", encoding = 'ISO-8859-1')
+     restaurant_data = pd.read_csv("../csv_repository/Overall_List/Top_100_NY_day.csv")
+     restaurant_data = restaurant_data.reset_index(drop = True)
      #insert the data into the database loading it in json format 
      #the orient = "index" reads it in as rows as opposed to columns
-     restaurants.insert_one(json.loads(restaurant_data.to_json(orient = "index")))
+     temp = json.loads(restaurant_data.to_json(orient = "index"))
+     print(temp)
+     for i in range(len(temp)):
+        restaurants.insert_one(temp[str(i)])
      #pull database as a variable
-     attractions = mongo.db.Top_Attractions_NYC
+     ##attractions = mongo.db.Top_Attractions_NYC
      #drop any existing data inside of the table - this will prevent you from adding multiple 
      # sets of the same data if you were to ever run this app more than once  
-     attractions.drop()
+     ##attractions.drop()
      #read the data in
-     attraction_data = pd.read_csv("../csv_repository/Overall_List/Top_NYC_Attractions.csv", encoding = 'ISO-8859-1')
+     ##attraction_data = pd.read_csv("../csv_repository/Overall_List/Top_NYC_Attractions.csv", encoding = 'ISO-8859-1')
      #insert the data into the database loading it in json format 
      #the orient = "index" reads it in as rows as opposed to columns
-     attractions.insert_one(json.loads(attraction_data.to_json(orient = "index")))
+     ##attractions.insert_one(json.dumps(attraction_data.to_json(orient = "index")))
 #run the function
 dataload()
 
@@ -98,7 +102,7 @@ def attraction():
 @app.route("/")
 def welcome():
     return (
-        f"Welcome to the NYC Popular Restaurant Test API!<br/>"
+        f"Welcome to the NYC Popular Restaurant and Attractions API!<br/>"
         f"Available Routes:<br/>"
         f"/api/v1.0/restaurants<br/>"
         f"/api/v1.0/attractions"

@@ -119,7 +119,7 @@ d3.request(queryUrl).get(response => {
         RestaurantMarker = "Street_Carts"
       }
     
-      var newMarker = L.marker([response[i].Lat, response[i].Long], {
+      var newMarker = L.marker([response[i].Latitude, response[i].Longitude], {
         icon: icons[RestaurantMarker]
         // scale: 300,
       }).addTo(map);
