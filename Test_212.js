@@ -119,15 +119,14 @@ d3.request(queryUrl).get(response => {
         RestaurantMarker = "Street_Carts"
       }
     
-      console.log(response[i].Lat)
-
       var newMarker = L.marker([response[i].Lat, response[i].Long], {
         icon: icons[RestaurantMarker]
+        // scale: 300,
       }).addTo(map);
 
 
 
-      console.log(newMarker)
+    
       // Add the new marker to the appropriate layer
       newMarker.addTo(layers[RestaurantMarker]);
 
@@ -146,18 +145,45 @@ d3.request(queryUrl).get(response => {
       // }).bindPopup("<h1>" + response[i].name + "</h1> <hr> <h3>Points: " + response[i].points + "</h3>").addTo(myMap);
     }
 
-  });
+    });
 
-  function markerClick(event){
-    console.log(event.latlng)
-    lat = event.latlng.Lat
-    lng = event.latlng.lng
+    // cd Leafunction markerClick(event){
+    //   console.log(event.latlng)
+    //   lat = event.latlng.Lat
+    //   lng = event.latlng.lng
+    //   INSTRUCTIONS FOR TYING THE TABLE AND MAP VIA EVENT HANDLERS
+    //   create dynamic route in app.py that takes in a latlng, 
+    //   then we would call a d3 on that and it would pass back all of the data based on what we filtered
+    //   in the promise, you would call RenderTable(data) function
 
-    //create dynamic route in app.py that takes in a latlng, 
-    //then we would call a d3 on that and it would pass back all of the data based on what we filtered
-    //in the promise, you would call RenderTable(data) function
-  }
-// /// NTA SEPERATIONS
+    //   // from data.js
+    
+  
+    // };
+
+
+
+d3.request(queryUrl).get(response => {
+  response = JSON.parse(response.response)
+  var tableData = response;
+  console.log(tableData)
+
+  // YOUR CODE HERE!
+  var tbody = d3.select("tbody")
+  tableData.forEach(function(tableinfo) {
+        var row = tbody.append("tr");
+        // console.log(tableinfo)      
+        Object.entries(tableinfo).forEach(function([key, value]) {
+        var cell = row.append("td").text(value);
+    // tbody.html("");
+      })
+      })
+    });
+  
+
+
+
+  // /// NTA SEPERATIONS
 function chooseColor(borough) {
     switch (borough) {
     case "Brooklyn":
@@ -187,8 +213,8 @@ d3.json(link, function(data) {
         color: "white",
         // Call the chooseColor function to decide which color to color our neighborhood (color based on borough)
         fillColor: chooseColor(feature.properties.borough),
-        fillOpacity: 0.5,
-        weight: 1.5
+        fillOpacity: 0.2,
+        weight: 1.0
       };
     },
     // Called on each feature
@@ -199,14 +225,14 @@ d3.json(link, function(data) {
         mouseover: function(event) {
           layer = event.target;
           layer.setStyle({
-            fillOpacity: 0.9
+            fillOpacity: 0.5
           });
         },
         // When the cursor no longer hovers over a map feature - when the mouseout event occurs - the feature's opacity reverts back to 50%
         mouseout: function(event) {
           layer = event.target;
           layer.setStyle({
-            fillOpacity: 0.5
+            fillOpacity: 0.2
           });
         },
         // When a feature (neighborhood) is clicked, it is enlarged to fit the screen
@@ -221,5 +247,3 @@ d3.json(link, function(data) {
     }
   }).addTo(map);
 });
-  
-
