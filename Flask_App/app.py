@@ -96,12 +96,49 @@ def attraction():
 
 
 ##Test Code from Mindy
-##@app.route("/api/categories/<category>")
-#def latlngFilter(category):
- #   restaurants = mongo.db.Top_100
-  #  searchRest = restaurants.findOne({})
-   # searchCat = restauratns.find({"Category": searchRest.})
-   # restaurant_json = json.loads(json_util.dumps(search))
+@app.route("/api/categories/<category>")
+def CatFilter(category):
+ restaurants = mongo.db.Top_100
+ searchRest = restaurants.findOne({})
+ searchCat = restaurants.find({"Category": searchRest})
+ cat_json = json.loads(json_util.dumps(searchCat))
+ return jsonify(cat_json)
+
+
+@app.route("/api/prices/<price>")
+def PriceFilter(price):
+ restaurants = mongo.db.Top_100
+ searchRest = restaurants.findOne({})
+ searchPrice = restaurants.find({"Price": searchRest})
+ price_json = json.loads(json_util.dumps(searchPrice))
+ return jsonify(price_json)
+
+@app.route("/api/name/<name>")
+def NameFilter(name):
+ restaurants = mongo.db.Top_100
+ searchRest = restaurants.findOne({})
+ searchName = restaurants.find({"Name": searchRest})
+ name_json = json.loads(json_util.dumps(searchName))
+ return jsonify(name_json)
+
+
+@app.route("/api/rating/<rating>")
+def RatingFilter(rating):
+ restaurants = mongo.db.Top_100
+ searchRest = restaurants.findOne({})
+ searchRat = restaurants.find({"Rating": searchRest})
+ rat_json = json.loads(json_util.dumps(searchRat))
+ return jsonify(rat_json)
+
+
+@app.route("/api/zipcode/<zipcode>")
+def ZipFilter(zipcode):
+ restaurants = mongo.db.Top_100
+ searchRest = restaurants.findOne({})
+ searchZip = restaurants.find({"Zip Code": searchRest})
+ zip_json = json.loads(json_util.dumps(searchZip))
+ return jsonify(zip_json)
+
 
 @app.route("/")
 def welcome():
@@ -109,7 +146,8 @@ def welcome():
         f"Welcome to the NYC Popular Restaurant and Attractions API!<br/>"
         f"Available Routes:<br/>"
         f"/api/v1.0/restaurants<br/>"
-        f"/api/v1.0/attractions"
+        f"/api/v1.0/attractions<br/>"
+        f"/api/categories/<category>"
     )
 
 if __name__ == "__main__":
