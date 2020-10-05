@@ -43,20 +43,24 @@ def dataload():
      restaurant_data = restaurant_data.reset_index(drop = True)
      #insert the data into the database loading it in json format 
      #the orient = "index" reads it in as rows as opposed to columns
-     temp = json.loads(restaurant_data.to_json(orient = "index"))
-     print(temp)
-     for i in range(len(temp)):
-        restaurants.insert_one(temp[str(i)])
+     temp_restaurant = json.loads(restaurant_data.to_json(orient = "index"))
+     ##print(temp_restaurant)
+     for i in range(len(temp_restaurant)):
+        restaurants.insert_one(temp_restaurant[str(i)])
      #pull database as a variable
-     ##attractions = mongo.db.Top_Attractions_NYC
+     attractions = mongo.db.Top_Attractions_NYC
      #drop any existing data inside of the table - this will prevent you from adding multiple 
      # sets of the same data if you were to ever run this app more than once  
-     ##attractions.drop()
+     attractions.drop()
      #read the data in
-     ##attraction_data = pd.read_csv("../csv_repository/Overall_List/Top_NYC_Attractions.csv", encoding = 'ISO-8859-1')
+     attraction_data = pd.read_csv("../csv_repository/Overall_List/Top_NYC_Attractions.csv", encoding = 'ISO-8859-1')
+     attraction_data = attraction_data.reset_index(drop = True)
      #insert the data into the database loading it in json format 
      #the orient = "index" reads it in as rows as opposed to columns
-     ##attractions.insert_one(json.dumps(attraction_data.to_json(orient = "index")))
+     temp_attractions = json.loads(attraction_data.to_json(orient = "index"))
+     ##print(temp_attractions)
+     for i in range(len(temp_attractions)):
+        attractions.insert_one(temp_attractions[str(i)])
 #run the function
 dataload()
 
