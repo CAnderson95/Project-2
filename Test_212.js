@@ -163,26 +163,6 @@ d3.request(queryUrl).get(response => {
 
 
 
-d3.request(queryUrl).get(response => {
-  response = JSON.parse(response.response)
-  var tableData = response;
-  console.log(tableData)
-
-  // YOUR CODE HERE!
-  var tbody = d3.select("tbody")
-  tableData.forEach(function(tableinfo) {
-        var row = tbody.append("tr");
-        // console.log(tableinfo)      
-        Object.entries(tableinfo).forEach(function([key, value]) {
-        var cell = row.append("td").text(value);
-    // tbody.html("");
-      })
-      })
-    });
-  
-
-
-
   // /// NTA SEPERATIONS
 function chooseColor(borough) {
     switch (borough) {
