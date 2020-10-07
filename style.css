@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+  font-family: Ubuntu, sans-serif;
+}
 body {
   padding: 0;
   margin: 0;
@@ -7,4 +11,38 @@ body {
 body,
 html {
   height: 70%;
+}
+
+/* The wrapper contains all of the page's content besides the footer, which is pushed to the bottom of the page */
+.wrapper {
+  position: relative;
+  min-height: 100%;
+  padding-bottom: 130px;
+  overflow: auto;
+}
+
+/* The footer is positioned at the bottom of the page */
+.footer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  min-height: 100px;
+  background: #0e2336;
+}
+
+/* The code styles the text at the bottom of the footer */
+.footer > .bottom {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 5px;
+  background: #c7dbf0;
+
+}
+
+.navbar {
+  padding: 5px;
+  margin: 0;
 }
