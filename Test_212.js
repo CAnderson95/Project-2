@@ -56,7 +56,7 @@ var info = L.control({
   position: "bottomright"
 });
 // When the layer control is added, insert a div with the class of "legend"
-info.onAdd = function() {
+info.onAdd = function () {
   var div = L.DomUtil.create("div", "legend");
   return div;
 };
@@ -90,82 +90,109 @@ var icons = {
     shape: "circle"
   })
 };
-
+// Turn this entire thing into a fucntion BuildMap
 d3.request(queryUrl).get(response => {
-    // Once we get a response, send the data.features object to the createFeatures function
-    //createFeatures(data.features);
-    // console.log(JSON.parse(response.response));
-    var RestaurantMarker;
-    response = JSON.parse(response.response)
-    console.log(response)
-    for (var i = 0; i < response.length; i++) {
+  // Once we get a response, send the data.features object to the createFeatures function
+  //createFeatures(data.features);
+  // console.log(JSON.parse(response.response));
+  var RestaurantMarker;
+  response = JSON.parse(response.response)
+  console.log(response)
+  for (var i = 0; i < response.length; i++) {
 
-      // Conditionals for countries points
-      var color = "";
-      if (response[i].category = "Pizza") {
-        color = "yellow";
-        RestaurantMarker = "Pizza"
-      }
-      else if (response[i].category = "Bagel") {
-        color = "blue";
-        RestaurantMarker = "Bagel"
-      }
-      else if (response[i].category = "Deli") {
-        color = "green";
-        RestaurantMarker = "Deli"
-      }
-      else {
-        color = "red";
-        RestaurantMarker = "Street_Carts"
-      }
-    
-      var newMarker = L.marker([response[i].Latitude, response[i].Longitude], {
-        icon: icons[RestaurantMarker]
-        // scale: 300,
-      }).addTo(map);
-
-
-
-    
-      // Add the new marker to the appropriate layer
-      newMarker.addTo(layers[RestaurantMarker]);
-
-      // Bind a popup to the marker that will  display on click. This will be rendered as HTML
-      newMarker.bindPopup("<h1>" + response.name + "</h1> <hr> <h2>" + response.rating + "</h2> <h2>" + response.price + " </h2>");
-
-      newMarker.on("click", markerClick)
-
-      // // Add circles to map
-      // L.circle(response[i].location, {
-      //   fillOpacity: 0.75,
-      //   color: "white",
-      //   fillColor: color,
-      //   // Adjust radius
-      //   // radius: response[i].points * 1500 SEE WHAT ADJUSTMENTS WE NEED TO MAKE
-      // }).bindPopup("<h1>" + response[i].name + "</h1> <hr> <h3>Points: " + response[i].points + "</h3>").addTo(myMap);
+    // Conditionals for countries points
+    var color = "";
+    if (response[i].category = "Pizza") {
+      color = "yellow";
+      RestaurantMarker = "Pizza"
+    }
+    else if (response[i].category = "Bagel") {
+      color = "blue";
+      RestaurantMarker = "Bagel"
+    }
+    else if (response[i].category = "Deli") {
+      color = "green";
+      RestaurantMarker = "Deli"
+    }
+    else {
+      color = "red";
+      RestaurantMarker = "Street_Carts"
     }
 
-    });
-
-    // cd Leafunction markerClick(event){
-    //   console.log(event.latlng)
-    //   lat = event.latlng.Lat
-    //   lng = event.latlng.lng
-    //   INSTRUCTIONS FOR TYING THE TABLE AND MAP VIA EVENT HANDLERS
-    //   create dynamic route in app.py that takes in a latlng, 
-    //   then we would call a d3 on that and it would pass back all of the data based on what we filtered
-    //   in the promise, you would call RenderTable(data) function
-
-    //   // from data.js
-    
-  
-    // };
+    var newMarker = L.marker([response[i].Latitude, response[i].Longitude], {
+      icon: icons[RestaurantMarker]
+      // scale: 300,
+    }).addTo(map);
 
 
+    // Add the new marker to the appropriate layer
+    newMarker.addTo(layers[RestaurantMarker]);
 
-  // /// NTA SEPERATIONS
+    // Bind a popup to the marker that will  display on click. This will be rendered as HTML
+    newMarker.bindPopup("<h1>" + response[i].Name + "</h1> <hr> <h2>" + "Rating: " + response[i].Rating + "</h2> <h2>" + "Price: " + response[i].Price + " </h2>");
+
+    newMarker.customName = response[i].Name
+
+    // L.marker([10.496093,-66.881935]).addTo(map).on('mouseover', onClick);
+    newMarker.on("click", onClick)
+
+    function buildtable(data) {
+      var table = d3.select("tbody");
+      table.html("");
+      data.forEach((filter) => {
+        var rowinfo = table.append("tr");
+        Object.entries(filter).forEach(([key, value]) => {
+          var cell = rowinfo.append("td");
+          cell.text(value);
+        });
+      });
+    }
+
+
+    function onClick(e) {
+      console.log(e);
+      console.log(e.target.customName)
+      
+      d3.request(queryUrl).get(data => {
+        
+        data = JSON.parse(data.response)
+        var tableData = data;
+        tableData = tableData.filter(row => row.Name === e.target.customName)
+        buildtable(tableData)
+      })
+    }
+
+    // // Add circles to map
+    // L.circle(response[i].location, {
+    //   fillOpacity: 0.75,
+    //   color: "white",
+    //   fillColor: color,
+    //   // Adjust radius
+    //   // radius: response[i].points * 1500 SEE WHAT ADJUSTMENTS WE NEED TO MAKE
+    // }).bindPopup("<h1>" + response[i].name + "</h1> <hr> <h3>Points: " + response[i].points + "</h3>").addTo(myMap);
+  }
+
+});
+
+// cd Leafunction markerClick(event){
+//   console.log(event.latlng)
+//   lat = event.latlng.Lat
+//   lng = event.latlng.lng
+//   INSTRUCTIONS FOR TYING THE TABLE AND MAP VIA EVENT HANDLERS
+//   create dynamic route in app.py that takes in a latlng, 
+//   then we would call a d3 on that and it would pass back all of the data based on what we filtered
+//   in the promise, you would call RenderTable(data) function
+
+//   // from data.js
+
+
+// };
+
+
+
+// /// NTA SEPERATIONS
 function chooseColor(borough) {
-    switch (borough) {
+  switch (borough) {
     case "Brooklyn":
       return "yellow";
     case "Bronx":
@@ -178,17 +205,17 @@ function chooseColor(borough) {
       return "purple";
     default:
       return "black";
-    }
   }
+}
 
 var link = "http://data.beta.nyc//dataset/0ff93d2d-90ba-457c-9f7e-39e47bf2ac5f/resource/" +
-"35dd04fb-81b3-479b-a074-a27a37888ce7/download/d085e2f8d0b54d4590b1e7d1f35594c1pediacitiesnycneighborhoods.geojson";
-  
-d3.json(link, function(data) {
+  "35dd04fb-81b3-479b-a074-a27a37888ce7/download/d085e2f8d0b54d4590b1e7d1f35594c1pediacitiesnycneighborhoods.geojson";
+
+d3.json(link, function (data) {
   // Creating a geoJSON layer with the retrieved data
   L.geoJson(data, {
     // Style each feature (in this case a neighborhood)
-    style: function(feature) {
+    style: function (feature) {
       return {
         color: "white",
         // Call the chooseColor function to decide which color to color our neighborhood (color based on borough)
@@ -198,25 +225,25 @@ d3.json(link, function(data) {
       };
     },
     // Called on each feature
-    onEachFeature: function(feature, layer) {
+    onEachFeature: function (feature, layer) {
       // Set mouse events to change map styling
       layer.on({
         // When a user's mouse touches a map feature, the mouseover event calls this function, that feature's opacity changes to 90% so that it stands out
-        mouseover: function(event) {
+        mouseover: function (event) {
           layer = event.target;
           layer.setStyle({
             fillOpacity: 0.5
           });
         },
         // When the cursor no longer hovers over a map feature - when the mouseout event occurs - the feature's opacity reverts back to 50%
-        mouseout: function(event) {
+        mouseout: function (event) {
           layer = event.target;
           layer.setStyle({
             fillOpacity: 0.2
           });
         },
         // When a feature (neighborhood) is clicked, it is enlarged to fit the screen
-        click: function(event) {
+        click: function (event) {
           console.log(event.target.getBounds())
           myMap.fitBounds(event.target.getBounds());
         }
