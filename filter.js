@@ -59,4 +59,18 @@ function buttonclick(){
   d3.selectAll(".filter").on("change", multiplefilter);
 
 
+  
+  function onClick(e) {
+    console.log(e);
+    console.log(e.target.customName)
+    
+    d3.request(queryUrl).get(data => {
+      
+      data = JSON.parse(data.response)
+      var tableData = data;
+      tableData = tableData.filter(row => row.Name === e.target.customName)
+      buildtable(tableData)
+    })
+  }
+
 });

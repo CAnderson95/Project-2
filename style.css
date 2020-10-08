@@ -1,3 +1,4 @@
+
 * {
   box-sizing: border-box;
   font-family: Ubuntu, sans-serif;
@@ -28,9 +29,14 @@ html {
   bottom: 0;
   left: 0;
   min-height: 100px;
-  background: #0e2336;
+  background: #6d7985;
 }
-
+#footer a {
+  color: rgba(255,255,255,0.5);
+  text-decoration: none;
+  margin: 10px;
+  font-size: 12px;
+}
 /* The code styles the text at the bottom of the footer */
 .footer > .bottom {
   position: absolute;
@@ -42,7 +48,6 @@ html {
 
 }
 
- 
 /* Adding styles to the aside and filter form */
 .ufo-form {
   margin-top: 50px;
@@ -89,7 +94,7 @@ select {
   padding: 20px;
   margin: 0;
   background: whitesmoke;
-  background-image: url("NYC_background3.jpg");
+  /*background-image: url("NYC_background3.jpg");*/
   background-attachment: fixed;
   background-position: bottom center;
   background-size: cover;
@@ -108,74 +113,23 @@ select {
   font-size: 1 rem;
  }
 
- /* input placeholder color changes */
-.form-control::-webkit-input-placeholder {
-  /* Chrome/Opera/Safari */
-  color: #8e979f;
+ #background_video {
+  position: absolute;
+
+  top: 0%; left: 0%;
+  transform: translate(0%, 0%);
+
+  object-fit: fill;
+  height: 100%; width: 100%;
 }
 
-.form-control::-moz-placeholder {
-  /* Firefox 19+ */
-  color: #8e979f;
-}
+#video_cover {
+  
 
-.form-control:-ms-input-placeholder {
-  /* IE 10+ */
-  color: #8e979f;
-}
+  width: 100%; height: 100%;
 
-.form-control:-moz-placeholder {
-  /* Firefox 18- */
-  color: #8e979f;
-}
-
-/* media queries which will only be activated at specific screen sizes */
-@media (max-width: 800px) {
-  #table-area td {
-    font-size: 1em;
-  }
-}
-
-@media (max-width: 500px) {
-  #table-area thead {
-    display: none;
-  }
-
-  #table-area tr td:first-child {
-    font-size: 1.8em;
-    font-weight: bold;
-    background: #1b3146;
-  }
-
-  #table-area tr td:last-child {
-    margin-bottom: 20px;
-  }
-
-  #table-area tr td:last-child::after {
-    display: block;
-    width: 100%;
-    height: 1px;
-    margin-top: 20px;
-    content: " ";
-    background: aliceblue;
-  }
-
-  #table-area td {
-    font-size: 1.25em;
-  }
-
-  #table-area tbody td {
-    display: block;
-    text-align: center;
-  }
-
-  #table-area tbody td::before {
-    display: block;
-    font-size: 1.4em;
-    font-weight: bold;
-    text-align: center;
-    content: attr(data-th);
-  }
-
-
+  background: url('background_video_NYC.gif') no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: bottom center;
 }
