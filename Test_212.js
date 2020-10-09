@@ -1,7 +1,7 @@
 //BASIC MAP SETUP
 // TEST 212
 queryUrl = "http://127.0.0.1:5000/api/v1.0/restaurants"
-
+queryUrl2 = "http://127.0.0.1:5000/api/v1.0/attractions"
 
 // var myMap = L.map("map", {
 //   center: [40.7128, -74.0059],
@@ -18,6 +18,9 @@ var layers = {
   Bagels: new L.LayerGroup(),
   Street_Carts: new L.LayerGroup(),
   Delis: new L.LayerGroup()
+  ,
+  Landmarks: new L.LayerGroup(),
+  Prices: new L.LayerGroup()
 };
 // Create the map with our layers
 var map = L.map("map", {
@@ -27,7 +30,9 @@ var map = L.map("map", {
     layers.Pizza,
     layers.Bagels,
     layers.Street_Carts,
-    layers.Delis
+    layers.Delis,
+    layers.Landmarks,
+    layers.Prices
   ]
 });
 
@@ -47,7 +52,9 @@ var overlays = {
   "Pizza": layers.Pizza,
   "Bagels": layers.Bagels,
   "Street_Carts": layers.Street_Carts,
-  "Delis": layers.Delis
+  "Delis": layers.Delis,
+  "Landmarks":layers.Landmarks,
+  "Prices": layers.Prices
 };
 // Create a control for our layers, add our overlay layers to it
 L.control.layers(null, overlays).addTo(map);
@@ -67,28 +74,33 @@ info.addTo(map);
 //CHANGE THE ICONS TO BE SPECIFIC TO THIS ACTIVITY AND NOT PAST ACTIVITIES
 var icons = {
   Pizza: L.ExtraMarkers.icon({
-    icon: "ion-settings",
-    iconColor: "white",
-    markerColor: "yellow",
+    icon: "fas fa-pizza-slice",
+    iconColor: "yellow",
     shape: "star"
   }),
   Bagels: L.ExtraMarkers.icon({
-    icon: "ion-android-bicycle",
-    iconColor: "white",
+    icon: "fas fa-stroopwafel",
+    iconColor: "blue",
     markerColor: "red",
     shape: "circle"
   }),
   Street_Carts: L.ExtraMarkers.icon({
-    icon: "ion-minus-circled",
-    iconColor: "white",
-    markerColor: "blue-dark",
+    icon: "fas fa-hotdog",
+    iconColor: "red",
+    markerColor: "red",
     shape: "penta"
   }),
   Delis: L.ExtraMarkers.icon({
-    icon: "ion-android-bicycle",
-    iconColor: "white",
+    icon: "fas fa-bread-slice",
+    iconColor: "brown",
     markerColor: "orange",
     shape: "circle"
+  })
+  ,
+  Landmarks: L.ExtraMarkers.icon({
+    icon: "fas fa-landmark",
+    iconColor: "green",
+    shape: "square"
   })
 };
 // Turn this entire thing into a fucntion BuildMap
@@ -98,7 +110,7 @@ d3.request(queryUrl).get(response => {
   // console.log(JSON.parse(response.response));
   var RestaurantMarker;
   response = JSON.parse(response.response)
-  console.log(response)
+  //console.log(response)
   for (var i = 0; i < response.length; i++) {
 
     // Conditionals for countries points
@@ -119,7 +131,7 @@ d3.request(queryUrl).get(response => {
       color = "red";
       RestaurantMarker = "Street_Carts"
     }
-    console.log(response[i])
+    //console.log(response[i])
 
     var newMarker = L.marker([response[i].Latitude, response[i].Longitude], {
       icon: icons[RestaurantMarker]
@@ -163,7 +175,7 @@ d3.request(queryUrl).get(response => {
         buildtable(tableData)
       })
     }
-
+    
     // // Add circles to map
     // L.circle(response[i].location, {
     //   fillOpacity: 0.75,
@@ -175,22 +187,64 @@ d3.request(queryUrl).get(response => {
   }
 
 });
+d3.request(queryUrl2).get(response => {
+  // Once we get a response, send the data.features object to the createFeatures function
+  //createFeatures(data.features);
+  // console.log(JSON.parse(response.response));
+  response = JSON.parse(response.response)
+  //console.log(response)
+  for (var i = 0; i < response.length; i++) {
+    //console.log(response[i])
 
-// cd Leafunction markerClick(event){
-//   console.log(event.latlng)
-//   lat = event.latlng.Lat
-//   lng = event.latlng.lng
-//   INSTRUCTIONS FOR TYING THE TABLE AND MAP VIA EVENT HANDLERS
-//   create dynamic route in app.py that takes in a latlng, 
-//   then we would call a d3 on that and it would pass back all of the data based on what we filtered
-//   in the promise, you would call RenderTable(data) function
-
-//   // from data.js
+    var newMarker = L.marker([response[i].Latitude, response[i].Longitude], {
+      icon: icons["Landmarks"]
+      // scale: 300,
+    });//.addTo(map);
 
 
-// };
+    // Add the new marker to the appropriate layer
+    newMarker.addTo(layers.Landmarks);
 
+    // Bind a popup to the marker that will  display on click. This will be rendered as HTML
+    newMarker.bindPopup("<h1>" + response[i].Title + "</h1> <hr> <h2>" + "Address: " + response[i].Address + "</h2> <h2>" + "Description: " + response[i].Descriptions + " </h2>");
 
+    newMarker.customName = response[i].Title
+
+    // L.marker([10.496093,-66.881935]).addTo(map).on('mouseover', onClick);
+   // newMarker.on("click", onClick)
+  }});
+
+  d3.request(queryUrl).get(response => {
+    // Once we get a response, send the data.features object to the createFeatures function
+    //createFeatures(data.features);
+    // console.log(JSON.parse(response.response));
+    var RestaurantMarker;
+    response = JSON.parse(response.response)
+    //console.log(response)  
+    var heatArray = [];
+  
+    for (var i = 0; i < response.length; i++) {
+     // var location = response[i].location;
+     //console.log(response[i]) 
+     if (response[i].Price == "$") {
+        heatArray.push([response[i].Latitude, response[i].Longitude])
+      }
+      else if (response[i].Price == "$$") {
+        heatArray.push([response[i].Latitude, response[i].Longitude])
+      }
+      else if (response[i].Price == "$$$") {
+        heatArray.push([response[i].Latitude, response[i].Longitude])
+      }
+      else if (response[i].Price == "$$$$") {
+        heatArray.push([response[i].Latitude, response[i].Longitude])
+      }
+    }
+    //console.log(heatArray)
+    var heat = L.heatLayer(heatArray, {
+      radius: 20
+    }).addTo(layers.Prices);
+  
+  });
 
 // /// NTA SEPERATIONS
 function chooseColor(borough) {
@@ -247,7 +301,7 @@ d3.json(link, function (data) {
         // When a feature (neighborhood) is clicked, it is enlarged to fit the screen
         click: function (event) {
           console.log(event.target.getBounds())
-          myMap.fitBounds(event.target.getBounds());
+          map.fitBounds(event.target.getBounds());
         }
       });
       // Giving each feature a pop-up with information pertinent to it

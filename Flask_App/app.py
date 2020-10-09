@@ -55,6 +55,7 @@ def dataload():
      #read the data in
      attraction_data = pd.read_csv("../csv_repository/Overall_List/Top_NYC_Attractions.csv", encoding = 'ISO-8859-1')
      attraction_data = attraction_data.reset_index(drop = True)
+     attraction_data.rename(columns = {'ï»¿Title':'Title'}, inplace = True) 
      #insert the data into the database loading it in json format 
      #the orient = "index" reads it in as rows as opposed to columns
      temp_attractions = json.loads(attraction_data.to_json(orient = "index"))
